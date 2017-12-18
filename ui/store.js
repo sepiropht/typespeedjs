@@ -27,6 +27,7 @@ function store(state, emitter) {
       emitter.emit("render");
     });
   }
+
   function fetchOptions() {
     request("/options", function(err, resp) {
       if (resp) {
@@ -49,18 +50,19 @@ function store(state, emitter) {
     }
     state.times++;
   }
+
   function update() {
     if (state.wScreen && state.wScreen.length) {
       state.wScreen.forEach(word => {
         word.x = word.x + 0.4;
       });
-      if (state.wScreen.some(w => w.x > window.screenX)) {
+      if (state.wScreen.some(w => w.x > window.innerWidth)) {
         emitter.emit("finish");
       }
       emitter.emit("render");
     }
   }
-  function isRemovedWord({ inputText, self }) {
+  function isRemovedWord({ inputText, domElementInput }) {
     if (!inputText.length) return;
     state.wScreen.forEach((w, i, arr) => {
       if (w.text.startsWith(inputText)) {
@@ -72,7 +74,8 @@ function store(state, emitter) {
     state.wScreen = state.wScreen.filter(w => {
       if ((inputText, w.text === inputText)) {
         state.score++;
-        self.value = "";
+        domElementInput.value = "";
+        setTimeout(() => domElementInput.focus(), 100); //hack orthewise doesn't work
       }
       return w.text !== inputText;
     });

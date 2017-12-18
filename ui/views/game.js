@@ -17,7 +17,7 @@ module.exports = function(state, emit) {
   }
   return !state.finish
     ? html`
-          <body style="max-width: ${maxWidth}%">
+          <body style="max-width: ${maxWidth}%;overflow-x: hidden;">
             <form submit= ${onsubmit}>
              ${(state.wScreen || []).map(
                (w, i) => html`<p style="top:${w.y}%;
@@ -35,7 +35,10 @@ module.exports = function(state, emit) {
                      <p> It 's over! you did great, your score is ${state.score}
                    </body>`;
   function onKeyup(e) {
-    emit("isRemoved_word", { inputText: e.target.value.trim(), self: this });
+    emit("isRemoved_word", {
+      inputText: e.target.value.trim(),
+      domElementInput: this
+    });
   }
 
   function onsubmit(e) {
