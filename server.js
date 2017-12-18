@@ -20,16 +20,30 @@ server.listen(8081, function() {
 });
 
 router.addRoute("GET /options", function(req, res, m) {
-  console.log("dans la route");
   let data = fs.readdirSync("./words/words.old/");
   res.end(JSON.stringify({ data }) + "\n");
 });
 
 router.addRoute("GET /langue/:name", function(req, res, m) {
-  console.log(m.params);
   let data = fs
-    .readFileSync(`./words/words.old/${m.params.name}`)
+    .readFileSync(`./words/words.old/${m.params.name}`, { encoding: "utf8" })
     .toString()
     .split("\n");
+  res.end(JSON.stringify({ data }) + "\n");
+});
+
+router.addRoute("POST /score/:name", function(req, res, m) {
+  let data = fs
+    .readFileSync(`./words/words.old/${m.params.name}`, { encoding: "utf8" })
+    .toString()
+    .split("\n");
+  res.end(JSON.stringify({ data }) + "\n");
+});
+
+router.addRoute("POST /score", function(req, res, m) {
+  console.log("database not implemented yet");
+  const data = {
+    score: "not that bad"
+  };
   res.end(JSON.stringify({ data }) + "\n");
 });

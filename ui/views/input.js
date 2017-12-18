@@ -13,7 +13,8 @@ module.exports = class Component extends Nanocomponent {
       <input onkeyup=${this.state.onKeyup} value=${this.state
       .value} onfocus=${state.onfocus} onblur=${state.onblur}
        autofocus
-      class=form-control type=text placeholder='write as fast as you can' data-toggle=dropdown>
+      class=form-control type=text placeholder=${this.state
+        .placeholder} data-toggle=dropdown>
     `;
   }
   update() {

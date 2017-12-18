@@ -18,6 +18,8 @@ function store(state, emitter) {
   emitter.on("update_game", update);
   emitter.on("isRemoved_word", isRemovedWord);
   emitter.on("finish", onEndGame);
+  emitter.on("post_score", postScore);
+  emitter.on("write_name", name);
 
   function fetchLang(lang) {
     request(`/langue/${lang}`, function(err, resp) {
@@ -87,13 +89,23 @@ function store(state, emitter) {
   }
 
   function onEndGame() {
-    const { score, name } = state;
     state.finish = true;
-    request.post("/score", { score, name }, function(err, resp) {
+  }
+
+  function postScore() {
+    const { score, name } = state;
+    request.post("/score", JSON.stringify({ score, name }), function(
+      err,
+      resp
+    ) {
       if (resp) {
         console.log(resp);
       }
     });
+  }
+
+  function name(name) {
+    state.name = state.name + name;
   }
 }
 
