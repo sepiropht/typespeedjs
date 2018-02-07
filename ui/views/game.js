@@ -18,7 +18,8 @@ module.exports = function(state, emit) {
   }
   return !state.finish
     ? html`
-          <body style="max-width: ${maxWidth}%;overflow-x: hidden;">
+          <body style="max-width: ${maxWidth}%;overflow-x: hidden;display: flex; flex-direction: flex-row">
+             <div style= "width: 80%; height: 500px; background-color: gray;position: relative;">
              ${(state.wScreen || []).map(
                (w, i) => html`<p style="top:${w.y}%;
                                         left:${w.x}px;
@@ -32,6 +33,8 @@ module.exports = function(state, emit) {
                value: state.text,
                placeholder: "type as much as you can"
              })}
+             </div>
+             <div style= "width:20%;background-color:red; heigth:500px" ></<div>
           </body>`
     : html` <body>
                     <p> It 's over! you did great, your score is ${state.score}

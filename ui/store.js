@@ -1,5 +1,5 @@
 var request = require("request");
-var cuid = require("cuid");
+var id = require("crypto").randomBytes(256);
 
 module.exports = store;
 
@@ -11,6 +11,7 @@ function store(state, emitter) {
   state.finish = false;
   state.score = 0;
   state.name = "";
+  state.unCatchedWords = 0;
 
   emitter.on("choose_lang", fetchLang);
   emitter.on("fetch_options", fetchOptions);
@@ -43,8 +44,8 @@ function store(state, emitter) {
     if (state.words && state.words.length && state.times % 25 === 0) {
       state.wScreen.push({
         text: state.words.pop(),
-        id: cuid(),
-        color: "",
+        id,
+        color: "white",
         x: 0,
         y: getRandomInt(0, 90)
       });
@@ -58,7 +59,10 @@ function store(state, emitter) {
       state.wScreen.forEach(word => {
         word.x = word.x + 0.4;
       });
-      if (state.wScreen.some(w => w.x > window.innerWidth)) {
+      //  console.log("coord of the first", state.wScreen[0].x);
+      // console.log("width blok", document.querySelector("div").width);
+
+      if (state.wScreen.some(w => w.x > document.querySelector("div").width)) {
         emitter.emit("finish");
       }
       emitter.emit("render");
@@ -70,7 +74,7 @@ function store(state, emitter) {
       if (w.text.startsWith(inputText)) {
         w.color = "green";
       } else {
-        w.color = "";
+        w.color = "white";
       }
     });
     state.wScreen = state.wScreen.filter(w => {
@@ -111,4 +115,8 @@ function store(state, emitter) {
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function addWordUncatched() {
+  state.unCatchedWord++;
 }
