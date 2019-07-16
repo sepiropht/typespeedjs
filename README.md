@@ -1,4 +1,7 @@
 # typespeedjs
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/sepiropht/typespeedjs.svg)](https://greenkeeper.io/)
+
 A very cute app
 
 ## Routes
